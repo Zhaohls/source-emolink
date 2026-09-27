@@ -1,0 +1,8 @@
+/target/
+/.idea/
+/.mvn/
+/.data/
+/.DS_Store
+/logs/
+/uploads/
+/server.log
