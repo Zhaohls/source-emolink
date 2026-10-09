@@ -191,4 +191,4 @@ CREATE TABLE `partner_message` (
 -- 管理员默认账号（密码：admin123）
 -- ============================================
 INSERT INTO `user` (`username`, `password`, `nickname`, `avatar`, `role`, `status`)
-VALUES ('admin', '$2a$10$DEXe3ANf0qbmeO.oCKVf9./sD9z75PsAlqpXDqcDNitSjbVD48vDK', '系统管理员', '/avatars/admin.png', 'admin', 1);
+VALUES ('admin', '$2a$10$DEXe3ANf0qbmeO.oCKVf9./sD9z75PsAlqpXDqcDNitSjbVD48vDK', '系统管理员', '/avatars/default.png', 'admin', 1);

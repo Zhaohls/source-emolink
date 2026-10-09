@@ -1,4 +1,4 @@
-> **源码整理副本**：本仓库已排除本机依赖、构建缓存和部分历史数据；尚未对当前副本逐项完成运行与业务验收。先阅读 [整理说明](SOURCE_EXPORT.md)，再按项目文档配置环境。
+> **源码整理版**：本仓库已排除本机依赖、构建缓存和旧运行数据。先阅读 [源码整理说明](SOURCE_EXPORT.md)，再按本文启动。
 
 # EmoLink
 
@@ -31,14 +31,42 @@ EmoLink/
 
 ## 快速启动
 
-### 后端
+### 1. 初始化本地数据库
+
+初始化脚本会重建 `emolink` 数据库中的项目表，只在新建的本地演示库中运行，不要对已有业务数据库执行。
+
+```bash
+mysql -u root -p < emolink-backend/sql/mysql-init.sql
+mysql -u root -p emolink < emolink-backend/sql/article-seed.sql
+mysql -u root -p emolink < emolink-backend/sql/demo-seed.sql
+```
+
+演示用户为 `emolink_demo / admin123`，管理员为 `admin / admin123`。这两个账号只用于本地演示，部署前请更改密码。
+
+### 2. 配置后端环境变量
+
+在项目根目录打开终端，设置数据库连接和 JWT 密钥；需要 AI 功能时再配置 DeepSeek Key：
+
+```bash
+export DB_URL='jdbc:mysql://127.0.0.1:3306/emolink?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true'
+export DB_USERNAME='root'
+export DB_PASSWORD='你的数据库密码'
+export JWT_SECRET='替换为至少32位的随机字符串'
+export DEEPSEEK_API_KEY='你的 DeepSeek Key'
+```
+
+DeepSeek Key 未配置时，日记 AI 建议和周报 AI 分析不可用，其余页面可以正常使用。
+
+### 3. 启动后端
 
 ```bash
 cd emolink-backend
 mvn spring-boot:run
 ```
 
-### 前端
+### 4. 启动前端
+
+在另一个终端中执行：
 
 ```bash
 cd emolink-frontend
@@ -46,20 +74,9 @@ npm install
 npm run dev -- --host 0.0.0.0 --port 18012
 ```
 
-### 数据库
-
-```bash
-mysql -u root -p < emolink-backend/sql/mysql-init.sql
-mysql -u root -p emolink < emolink-backend/sql/article-seed.sql
-```
-
-## 默认管理员账号
-
-- 用户名：`admin`
-- 密码：`admin123`
-
 ## 说明
 
 - 上传目录使用相对路径 `uploads/`
 - 文章模块已移除封面图字段
-- DeepSeek 调用失败会直接报错，不再返回默认文案
+- DeepSeek 调用失败会明确提示错误，不会伪装成 AI 已生成内容
+- 本项目是课程设计演示系统，不能替代专业心理咨询、诊断或治疗
